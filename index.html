@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grims Discord Bot</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #242424;
+            --accent: #6e6e6e;
+            --accent-hover: #8a8a8a;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --border-color: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .poster-container {
+            width: 100%;
+            max-width: 720px;
+            min-height: 960px;
+            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            border-radius: 10px;
+        }
+
+        /* Background Decor */
+        .bg-element {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+        }
+        .element-1 {
+            width: 350px;
+            height: 350px;
+            background: #555;
+            top: -50px;
+            right: -50px;
+            opacity: 0.2;
+        }
+        .element-2 {
+            width: 250px;
+            height: 250px;
+            background: #444;
+            bottom: 20px;
+            left: -30px;
+            opacity: 0.2;
+        }
+        .element-3 {
+            width: 180px;
+            height: 180px;
+            background: #3a3a3a;
+            top: 200px;
+            left: 50px;
+            opacity: 0.15;
+        }
+        .element-4 {
+            width: 150px;
+            height: 150px;
+            background: #505050;
+            bottom: 200px;
+            right: 80px;
+            opacity: 0.15;
+        }
+
+        /* Subtle Lines */
+        .line-decoration {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.03);
+            z-index: 0;
+        }
+        .line-1 {
+            width: 1px;
+            height: 100%;
+            left: 20%;
+        }
+        .line-2 {
+            width: 1px;
+            height: 100%;
+            right: 20%;
+        }
+        .line-3 {
+            height: 1px;
+            width: 100%;
+            top: 30%;
+        }
+        .line-4 {
+            height: 1px;
+            width: 100%;
+            bottom: 30%;
+        }
+
+        .content-wrapper {
+            z-index: 1;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Profile Section */
+        .profile-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 35px;
+            background: transparent;
+        }
+
+        .profile-ring {
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 2px dashed var(--accent);
+            animation: rotate 20s linear infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .profile-img-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: transparent;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            border-radius: 0;
+            box-shadow: none;
+            background-color: transparent;
+            position: relative;
+            z-index: 2;
+        }
+
+        .status-indicator {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 25px;
+            height: 25px;
+            background-color: #3ba55c;
+            border: 3px solid var(--bg-primary);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(59, 165, 92, 0.5);
+            z-index: 3;
+        }
+
+        h1 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: 4px;
+            color: var(--text-primary);
+            text-transform: uppercase;
+        }
+
+        .tagline {
+            font-size: 16px;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 25px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .description {
+            font-size: 17px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 480px;
+            margin-bottom: 50px;
+            font-weight: 300;
+        }
+
+        /* Features Grid */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 50px;
+        }
+
+        .feature-card {
+            background-color: var(--bg-tertiary);
+            padding: 25px 15px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        .feature-icon {
+            font-size: 36px;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .feature-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Buttons */
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            width: 100%;
+            max-width: 380px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 28px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .btn-primary {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--accent);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text-primary);
+            color: var(--text-primary);
+        }
+
+        .btn i {
+            margin-right: 12px;
+            font-size: 22px;
+        }
+
+        /* Creator Credit */
+        .creator-credit {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .creator-credit::before,
+        .creator-credit::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: var(--border-color);
+        }
+
+        .creator-credit::before {
+            margin-right: 15px;
+        }
+
+        .creator-credit::after {
+            margin-left: 15px;
+        }
+
+        .creator-text {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+        }
+
+        .creator-tag {
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(110, 110, 110, 0.5);
+        }
+
+        .footer {
+            margin-top: auto;
+            padding-top: 20px;
+            font-size: 13px;
+            color: #666;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-bottom: 45px;
+            width: 100%;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-value {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        /* Responsive Tweaks */
+        @media (max-width: 768px) {
+            .poster-container {
+                padding: 40px 25px;
+            }
+            
+            .features {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
+            
+            .feature-card {
+                padding: 20px 10px;
+            }
+            
+            .feature-title {
+                font-size: 16px;
+            }
+            
+            .feature-desc {
+                font-size: 12px;
+            }
+            
+            .stats {
+                gap: 30px;
+            }
+            
+            .stat-value {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .poster-container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 48px;
+            }
+            
+            .description {
+                font-size: 15px;
+                max-width: 100%;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .feature-card {
+                flex-direction: row;
+                text-align: left;
+                padding: 15px 20px;
+            }
+            
+            .feature-icon {
+                margin-bottom: 0;
+                margin-right: 15px;
+            }
+            
+            .stats {
+                gap: 25px;
+            }
+            
+            .btn {
+                font-size: 16px;
+                padding: 12px 24px;
+            }
+            
+            .creator-text {
+                font-size: 12px;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .poster-container {
+                padding: 80px 60px;
+            }
+            
+            h1 {
+                font-size: 64px;
+            }
+            
+            .features {
+                gap: 25px;
+            }
+            
+            .stats {
+                gap: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="poster-container">
+        <!-- Decorative Background Elements -->
+        <div class="bg-element element-1"></div>
+        <div class="bg-element element-2"></div>
+        <div class="bg-element element-3"></div>
+        <div class="bg-element element-4"></div>
+        
+        <!-- Subtle Lines -->
+        <div class="line-decoration line-1"></div>
+        <div class="line-decoration line-2"></div>
+        <div class="line-decoration line-3"></div>
+        <div class="line-decoration line-4"></div>
+
+        <div class="content-wrapper">
+            <!-- Profile Image -->
+            <div class="profile-container">
+                <div class="profile-ring"></div>
+                <div class="profile-img-container">
+                    <img src="https://z-cdn-media.chatglm.cn/files/ae456097-3f89-4af3-9b7c-568fbe3ef149.png?auth_key=1870569760-1bfd1b4e9cf9447faf6dde2a0c00f10b-0-b248ed676dcc5775f260c937c05e505f" alt="Grims Bot Profile" class="profile-img">
+                    <div class="status-indicator"></div>
+                </div>
+            </div>
+
+            <h1>GRIMS</h1>
+            <p class="tagline">Next Gen Discord Bot</p>
+            <p class="description">
+                Bot Discord terbaik untuk server kamu. Moderasi, musik, dan berbagai fitur seru lainnya - semua dalam satu paket yang powerful.
+            </p>
+
+            <!-- Stats -->
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value">1</div>
+                    <div class="stat-label">Server</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">10+</div>
+                    <div class="stat-label">Users</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">24/7</div>
+                    <div class="stat-label">Online</div>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="features">
+                <div class="feature-card">
+                    <i class="material-icons feature-icon">security</i>
+                    <div class="feature-title">Moderation</div>
+                    <div class="feature-desc">Tools moderasi canggih untuk jaga keamanan server</div>
+                </div>
+                <div class="feature-card">
+                    <i class="material-icons feature-icon">music_note</i>
+                    <div class="feature-title">Music</div>
+                    <div class="feature-desc">Musik berkualitas tinggi untuk voice channel</div>
+                </div>
+                <div class="feature-card">
+                    <i class="material-icons feature-icon">sentiment_very_satisfied</i>
+                    <div class="feature-title">Fun</div>
+                    <div class="feature-desc">Berbagai perintah seru untuk hiburan server</div>
+                </div>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="actions">
+                <a href="https://discord.com/oauth2/authorize?client_id=1457426008318808257&permissions=8&scope=bot" target="_blank" class="btn btn-primary">
+                    <i class="material-icons">add_circle</i>
+                    Invite to Server
+                </a>
+                <a href="https://discord.gg/4dQT9ufahB" target="_blank" class="btn btn-secondary">
+                    <i class="material-icons">discord</i>
+                    Join Support Server
+                </a>
+            </div>
+
+            <!-- Creator Credit -->
+            <div class="creator-credit">
+                <div class="creator-text">Created by <span class="creator-tag">#MAMADGANG</span></div>
+            </div>
+
+            <div class="footer">
+                &copy; 2026 Grims Bot. Built for the Community.
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
